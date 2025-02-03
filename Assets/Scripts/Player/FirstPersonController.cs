@@ -10,6 +10,7 @@ public class FirstPersonController : MonoBehaviour
     public static FirstPersonController instance;
     
     private Rigidbody rb;
+    
 
     #region Camera Movement Variables
 
@@ -290,6 +291,10 @@ public class FirstPersonController : MonoBehaviour
         {
             if(isSprinting)
             {
+                
+                //* kiedy sprintuje to traci częściej pragnienie
+                StatsManager.instance.thirstDepletionInterval = 3f;
+                
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
 
@@ -306,6 +311,7 @@ public class FirstPersonController : MonoBehaviour
             }
             else
             {
+                StatsManager.instance.thirstDepletionInterval = StatsManager.instance.defaultThirstDepletionInterval;
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
             }
