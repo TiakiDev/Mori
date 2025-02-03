@@ -92,6 +92,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         quantityText.enabled = true;
         if (itemSO == null) return;
         icon.sprite = itemSO.itemIcon;
+        TooltipManager.instance.ShowTooltip(itemSO.itemName, itemSO.itemIcon);
 
         if (dragIcon != null)
         {
