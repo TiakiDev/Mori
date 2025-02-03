@@ -42,6 +42,7 @@ public class InventoryManager : MonoBehaviour
         {
             quickSlots[i].isSelected = false;
             quickSlots[i].selectedShader.SetActive(false);
+            quickSlots[i].UnequipItem();
         }
     }
     private void Awake()
@@ -86,6 +87,12 @@ public class InventoryManager : MonoBehaviour
             SelectionManager.instance.interactionText.gameObject.SetActive(false);
         }
         
+        SlotChangingHandler();
+        
+    }
+    
+    private void SlotChangingHandler()
+    {
         //możesz se zmieniac sloty 1 2 3 4
         // Obsługa klawiszy 1-6
         for (int i = 0; i < quickSlots.Count; i++)
@@ -114,7 +121,6 @@ public class InventoryManager : MonoBehaviour
             quickSlots[currentSlotIndex].SelectSlot();
             accumulatedScroll = 0f; // Reset akumulacji
         }
-        
-        
     }
+    
 }

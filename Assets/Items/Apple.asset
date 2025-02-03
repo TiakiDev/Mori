@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   itemName: Apple
-  itemIcon: {fileID: 21300000, guid: baa8aa5a880ee124ea891680c177a871, type: 3}
+  itemIcon: {fileID: 21300000, guid: f48615e895caa4b46a5868c00e12cd62, type: 3}
+  itemDescription: "The perfect snack to throw at your enemy\u2019s skull\u2026 or
+    eat if you\u2019re boring and into \u2018nutrition\u2019."
+  itemType: 0

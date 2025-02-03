@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && interactable.playerInRange)
+        if(Input.GetKeyDown(KeyCode.Mouse0) && interactable.playerInRange && SelectionManager.instance.onTarget)
         {
             InventoryManager.instance.AddItem(itemSO, quantity);
             Destroy(gameObject);

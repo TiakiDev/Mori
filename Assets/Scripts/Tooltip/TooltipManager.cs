@@ -8,11 +8,13 @@ public class TooltipManager : MonoBehaviour
     public static TooltipManager instance;
     
     public TMP_Text tooltipName;
+    public TMP_Text tooltipDescription;
     public Image tooltipIcon;
         
-    public void ShowTooltip(string text, Sprite icon)
+    public void ShowTooltip(string text, Sprite icon, string description)
     {
         tooltipName.text = text;
+        tooltipDescription.text = description;
         tooltipIcon.sprite = icon;
         
         gameObject.SetActive(true);

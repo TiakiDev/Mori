@@ -31,7 +31,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         UpdateQuantityText();
     }
 
-    private void ClearSlot()
+    public void ClearSlot()
     {
         icon.sprite = nullImage;
         itemSO = null;
@@ -39,7 +39,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         UpdateQuantityText();
     }
     
-    private void UpdateQuantityText()
+    public void UpdateQuantityText()
     {
         if (quantity > 1)
         {
@@ -92,7 +92,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         quantityText.enabled = true;
         if (itemSO == null) return;
         icon.sprite = itemSO.itemIcon;
-        TooltipManager.instance.ShowTooltip(itemSO.itemName, itemSO.itemIcon);
+        TooltipManager.instance.ShowTooltip(itemSO.itemName, itemSO.itemIcon, itemSO.itemDescription);
 
         if (dragIcon != null)
         {

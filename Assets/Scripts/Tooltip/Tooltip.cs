@@ -10,6 +10,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Slot slot;
 
     private string tooltipName;
+    private string tooltipDescription;
     private Sprite tooltipIcon;
     
     private void Start()
@@ -24,7 +25,8 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             tooltipName = slot.itemSO.itemName;
             tooltipIcon = slot.itemSO.itemIcon;
-            TooltipManager.instance.ShowTooltip(tooltipName, tooltipIcon);
+            tooltipDescription = slot.itemSO.itemDescription;
+            TooltipManager.instance.ShowTooltip(tooltipName, tooltipIcon, tooltipDescription);
         }
         else
         {
