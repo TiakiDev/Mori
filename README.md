@@ -8,22 +8,11 @@
 ![GitHub Issues](https://img.shields.io/github/issues/TiakiDev/mori?label=issues)
 ![Version](https://img.shields.io/badge/Version-0.0.1--Pre--alpha-orange)
 
+
 Prosta gra survivalowa, w której głównym celem jest **przetrwanie**.  
 Projekt w fazie rozwoju, z planami rozbudowy kluczowych mechanik.
 
 `🔥 Aktualny status: Wczesny prototyp | ⌚ Ostatnia aktualizacja: 03.02.2025`
-
----
-
-## 🌟 Kluczowe Funkcje
-| ✅ Aktualne Mechaniki         | 🚧 Planowane Rozszerzenia    |
-|-------------------------------|-----------------------------|
-| 🩸 System zdrowia i głodu     | 🛠️ Zaawansowane craftowanie |
-| 🏃♂️ Sprint z wytrzymałością | 🏡 Budowa i rozbudowa bazy  |
-| 🎒 System ekwipunku       |           |
-| 📦 Podstawowa fizyka obiektów |       |
-
----
 
 ## 🚀 Szybki Start
 ### Wymagania
