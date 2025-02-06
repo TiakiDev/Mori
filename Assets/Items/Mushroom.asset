@@ -16,3 +16,6 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: ec8a63ae1d2acda4ba21647443ed9218, type: 3}
   itemDescription: 
   itemType: 0
+  hungerAmount: 10
+  thirstAmount: 2
+  healthAmount: 5

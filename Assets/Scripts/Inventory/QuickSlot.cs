@@ -48,7 +48,7 @@ public class QuickSlot : MonoBehaviour
             {
                 ConsumableManager.instance.UseConsumable(slot);
             }
-            else if (slot.itemSO.itemType == ItemSO.ItemType.Axe)
+            else if (slot.itemSO.itemType == ItemSO.ItemType.Axe || slot.itemSO.itemType == ItemSO.ItemType.Pickaxe )
             {
                 ToolManager.instance.UseTool(slot);
             }
@@ -94,6 +94,8 @@ public class QuickSlot : MonoBehaviour
             itemModel.gameObject.name = item.itemName;
             
             itemModel.layer = LayerMask.NameToLayer("Tool");
+            SetLayerRecursively(itemModel, LayerMask.NameToLayer("Tool"));
+            
             var modelRenderer = itemModel.GetComponent<MeshRenderer>();
             
             if (modelRenderer == null)
@@ -102,7 +104,6 @@ public class QuickSlot : MonoBehaviour
             }
             if (modelRenderer != null)
             {
-                modelRenderer.material.shader = Shader.Find("Custom/OverlayLitShader");
                 modelRenderer.shadowCastingMode = ShadowCastingMode.Off;
             }
 
@@ -111,6 +112,15 @@ public class QuickSlot : MonoBehaviour
         else
         {
             Debug.LogError("Model nie został znaleziony: " + item.itemName);
+        }
+    }
+    
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, layer);
         }
     }
 }

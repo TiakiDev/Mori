@@ -3,22 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour
 {
     public static SelectionManager instance;
-    
+    [Header("Refrences")]
     public TMP_Text interactionText;
+    public GameObject infoHolder;
     //cursor variables
+    [Header("Cursors")]
     public GameObject handCursor;
     public GameObject axeCursor;
+    public GameObject pickaxeCursor;
     //targets variables
+    [Space(2)]
     public InteractableObject currentTarget;
     public bool onTarget;
     //tree variables
     public GameObject selectedTree;
-    public GameObject chopHolder;
+    public GameObject selectedOre;
+    
 
     private void Awake()
     {
@@ -50,6 +56,7 @@ private void Update()
 
         InteractableObject interactable = selectionTransform.GetComponent<InteractableObject>();
         ChoppableTree choppableTree = selectionTransform.GetComponent<ChoppableTree>();
+        MineableOre mineableOre = selectionTransform.GetComponent<MineableOre>();
         Item item = selectionTransform.GetComponent<Item>();
 
         // Obsługa drzew
@@ -57,7 +64,8 @@ private void Update()
         {
             choppableTree.canBeChopped = true;
             selectedTree = choppableTree.gameObject;
-            chopHolder.gameObject.SetActive(true);
+            infoHolder.gameObject.SetActive(true);
+            infoHolder.GetComponentInChildren<TMP_Text>().text = choppableTree.GetName();
             axeCursor.SetActive(true);
             anyCursorActive = true; // Aktywny kursor siekiery
         }
@@ -67,8 +75,29 @@ private void Update()
             {
                 selectedTree.gameObject.GetComponent<ChoppableTree>().canBeChopped = false;
                 selectedTree = null;
-                chopHolder.gameObject.SetActive(false);
+                infoHolder.gameObject.SetActive(false);
                 axeCursor.SetActive(false);
+            }
+        }
+        
+        //obsługa mineralów
+        if (mineableOre && mineableOre.playerInRange && !mineableOre.hasBeenMined)
+        {
+            mineableOre.canBeMined = true;
+            selectedOre = mineableOre.gameObject;
+            infoHolder.gameObject.SetActive(true);
+            infoHolder.GetComponentInChildren<TMP_Text>().text = mineableOre.GetName();
+            pickaxeCursor.SetActive(true);
+            anyCursorActive = true; // Aktywny kursor kilofa
+        }
+        else
+        {
+            if (selectedOre != null) // This should be selectedOre
+            {
+                selectedOre.gameObject.GetComponent<MineableOre>().canBeMined = false;
+                selectedOre = null;
+                infoHolder.gameObject.SetActive(false);
+                pickaxeCursor.SetActive(false);
             }
         }
 
@@ -101,6 +130,7 @@ private void Update()
     {
         onTarget = false;
         interactionText.alpha = 0;
+        pickaxeCursor.SetActive(false);
         axeCursor.SetActive(false);
         handCursor.SetActive(false);
     }

@@ -17,3 +17,6 @@ MonoBehaviour:
   itemDescription: "The perfect snack to throw at your enemy\u2019s skull\u2026 or
     eat if you\u2019re boring and into \u2018nutrition\u2019."
   itemType: 0
+  hungerAmount: 3
+  thirstAmount: 2
+  healthAmount: 0

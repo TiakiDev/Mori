@@ -16,6 +16,7 @@ public class ItemSO : ScriptableObject
     {
         Consumable,
         Axe,
+        Pickaxe,
     }
     
     [Header("Item Type")]

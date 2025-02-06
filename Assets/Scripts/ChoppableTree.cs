@@ -11,6 +11,8 @@ public class ChoppableTree : MonoBehaviour
 
     public float treeMaxHealth;
     public float treeHealth;
+    
+    public string treeName;
 
     private Animator animator;
 
@@ -50,14 +52,14 @@ public class ChoppableTree : MonoBehaviour
         StartCoroutine(Hit());
     }
 
-    public void TreeIsDead()
+    private void TreeIsDead()
     {
         Vector3 treePosition = transform.position;
         
         Destroy(transform.parent.transform.parent.gameObject);
         canBeChopped = false;
         SelectionManager.instance.selectedTree = null;
-        SelectionManager.instance.chopHolder.gameObject.SetActive(false);
+        SelectionManager.instance.infoHolder.gameObject.SetActive(false);
         SelectionManager.instance.axeCursor.SetActive(false);
         
         GameObject brokeTreen = Instantiate(Resources.Load<GameObject>("Prefabs/ChoppedTree"), treePosition, Quaternion.identity);
@@ -74,5 +76,10 @@ public class ChoppableTree : MonoBehaviour
             TreeIsDead();
         }
         
+    }
+    
+    public string GetName()
+    {
+        return treeName;
     }
 }

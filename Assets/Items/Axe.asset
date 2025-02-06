@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   itemName: Axe
-  itemIcon: {fileID: 21300000, guid: 484e6bf12005afb4f9583ffa0ad2a2d5, type: 3}
+  itemIcon: {fileID: 21300000, guid: f368d477cf7405b42b2f14eac135c983, type: 3}
   itemDescription: Cuts wood, foes, and your ego. Handle splinters included for free.
   itemType: 1
+  hungerAmount: 0
+  thirstAmount: 0
+  healthAmount: 0

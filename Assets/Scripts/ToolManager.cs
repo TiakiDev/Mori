@@ -20,18 +20,30 @@ public class ToolManager : MonoBehaviour
 
     public void UseTool(Slot slot)
     {
-        StartCoroutine(HittingRoutine());
+        StartCoroutine(HittingRoutine(slot));
     }
 
-    private IEnumerator HittingRoutine()
+    private IEnumerator HittingRoutine(Slot slot)
     {
-        GameObject selectedTree = SelectionManager.instance.selectedTree;
-
-        if (selectedTree != null)
+        if (slot.itemSO.itemType == ItemSO.ItemType.Axe)
         {
-            selectedTree.GetComponent<ChoppableTree>().GetHit();
+            GameObject selectedTree = SelectionManager.instance.selectedTree;
+        
+            if (selectedTree != null)
+            {
+                selectedTree.GetComponent<ChoppableTree>().GetHit();
+            }
         }
 
+        if (slot.itemSO.itemType == ItemSO.ItemType.Pickaxe)
+        {
+            GameObject selectedOre = SelectionManager.instance.selectedOre;
+        
+            if (selectedOre != null)
+            {
+                selectedOre.GetComponent<MineableOre>().GetHit();
+            }
+        }
         GlobalState.instance.canUse = false;
         toolHolderAnimator.SetTrigger("Swing");
         yield return new WaitForSeconds(1f);
