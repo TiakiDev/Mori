@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu (fileName = "New Item", menuName = "Inventory/Item")]
@@ -19,6 +20,10 @@ public class ItemSO : ScriptableObject
     
     [Header("Item Type")]
     public ItemType itemType;
+    
+    [Header("Consumable Settings")]
+    public float hungerAmount;
+    public float thirstAmount;
 
 
 

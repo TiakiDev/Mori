@@ -53,7 +53,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        if(PointerEventData.InputButton.Left == eventData.button && Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Debug.Log("działa");
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)

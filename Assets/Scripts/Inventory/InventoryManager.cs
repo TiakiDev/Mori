@@ -71,7 +71,6 @@ public class InventoryManager : MonoBehaviour
             
             FirstPersonController.instance.lockCursor = true;
             FirstPersonController.instance.cameraCanMove = true;
-            FirstPersonController.instance.enableZoom = true;
             FirstPersonController.instance.crosshairObject.gameObject.SetActive(true);
             SelectionManager.instance.interactionText.gameObject.SetActive(true);
             TooltipManager.instance.HideTooltip();
@@ -82,7 +81,6 @@ public class InventoryManager : MonoBehaviour
             isOpen = true;
             FirstPersonController.instance.lockCursor = false;
             FirstPersonController.instance.cameraCanMove = false;
-            FirstPersonController.instance.enableZoom = false;
             FirstPersonController.instance.crosshairObject.gameObject.SetActive(false);
             SelectionManager.instance.interactionText.gameObject.SetActive(false);
         }

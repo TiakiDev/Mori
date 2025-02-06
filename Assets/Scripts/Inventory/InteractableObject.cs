@@ -6,7 +6,6 @@ using UnityEngine;
 public class InteractableObject : MonoBehaviour
 {
     public string objectName;
-
     public bool playerInRange;
     
     public string GetObjectName()
