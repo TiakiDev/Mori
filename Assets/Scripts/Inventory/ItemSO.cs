@@ -24,6 +24,7 @@ public class ItemSO : ScriptableObject
     [Header("Consumable Settings")]
     public float hungerAmount;
     public float thirstAmount;
+    public float healthAmount;
 
 
 

@@ -25,6 +25,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         
         UpdateQuantityText();
     }
+    
+    public void RemoveItem(int amount)
+    {
+        quantity -= 1;
+        UpdateQuantityText();
+        if (quantity <= 0)
+        {
+            ClearSlot();
+        }
+    }
 
     private void Start()
     {

@@ -18,9 +18,8 @@ public class QuickSlot : MonoBehaviour
     private void Start()
     {
         slot = GetComponent<Slot>();
-        selectedShader.SetActive(false);
         toolHolderAnimator = toolHolder.GetComponent<Animator>();
-
+        selectedShader.SetActive(false);
         isEquipped = false;
     }
     
@@ -31,54 +30,29 @@ public class QuickSlot : MonoBehaviour
             UnequipItem();
             isEquipped = false;
         }
-        
-        if(isSelected && slot.itemSO != null && !isEquipped)
+
+        if (isSelected && slot.itemSO != null && !isEquipped)
         {
             SetEquippedItem(slot.itemSO);
             isEquipped = true;
         }
-        
-        if(Input.GetKeyDown(KeyCode.Mouse0) && isSelected && slot.itemSO != null 
-           && !InventoryManager.instance.isOpen && !SelectionManager.instance.onTarget && GlobalState.instance.canUse)
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) 
+            && isSelected 
+            && slot.itemSO != null
+            && !InventoryManager.instance.isOpen 
+            && !SelectionManager.instance.onTarget 
+            && GlobalState.instance.canUse)
         {
             if (slot.itemSO.itemType == ItemSO.ItemType.Consumable)
             {
-                StartCoroutine(EatingRoutine());
+                ConsumableManager.instance.UseConsumable(slot);
             }
             else if (slot.itemSO.itemType == ItemSO.ItemType.Axe)
             {
-                StartCoroutine(HittingRoutine());
+                ToolManager.instance.UseTool(slot);
             }
         }
-    }
-    
-    private IEnumerator EatingRoutine()
-    {
-        GlobalState.instance.canUse = false;
-        toolHolderAnimator.SetTrigger("Eat");
-        yield return new WaitForSeconds(0.35f);
-        GlobalState.instance.canUse = true;
-        slot.quantity -= 1;
-        slot.UpdateQuantityText();
-        if (slot.quantity <= 0)
-        {
-            slot.ClearSlot();
-                    
-        }
-    }
-    
-    private IEnumerator HittingRoutine()
-    {
-        GameObject selectedTree = SelectionManager.instance.selectedTree;
-
-        if (selectedTree != null)
-        {
-            selectedTree.GetComponent<ChoppableTree>().GetHit();
-        }
-        GlobalState.instance.canUse = false;
-        toolHolderAnimator.SetTrigger("Swing");
-        yield return new WaitForSeconds(1f);
-        GlobalState.instance.canUse = true;
     }
     
 

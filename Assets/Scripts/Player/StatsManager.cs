@@ -58,10 +58,22 @@ public class StatsManager : MonoBehaviour
         waterBar.fillAmount = thirst / 100;
     }
     
-    private void ChangeHealth(int amount)
+    public void ChangeHealth(float amount)
     {
         health += amount;
         health = Mathf.Clamp(health, 0, maxHealth);
+        UpdateBars();
+    }
+    public void ChangeHunger(float amount)
+    {
+        hunger += amount;
+        hunger = Mathf.Clamp(hunger, 0, 100);
+        UpdateBars();
+    }
+    public void ChangeThirst(float amount)
+    {
+        thirst += amount;
+        thirst = Mathf.Clamp(thirst, 0, 100);
         UpdateBars();
     }
     
