@@ -44,9 +44,13 @@ public class ToolManager : MonoBehaviour
                 selectedOre.GetComponent<MineableOre>().GetHit();
             }
         }
-        GlobalState.instance.canUse = false;
-        toolHolderAnimator.SetTrigger("Swing");
-        yield return new WaitForSeconds(1f);
-        GlobalState.instance.canUse = true;
+
+        if (slot.itemSO.itemType != ItemSO.ItemType.Constructable)
+        {
+            GlobalState.instance.canUse = false;
+            toolHolderAnimator.SetTrigger("Swing");
+            yield return new WaitForSeconds(1f);
+            GlobalState.instance.canUse = true;
+        }
     }
 }

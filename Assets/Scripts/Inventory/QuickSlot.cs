@@ -113,6 +113,19 @@ public class QuickSlot : MonoBehaviour
         {
             Debug.LogError("Model nie został znaleziony: " + item.itemName);
         }
+
+        if (item.itemType == ItemSO.ItemType.Constructable)
+        {
+            switch (item.itemName)
+            {
+                case "Foundation":
+                    ConstructionManager.instance.ActivateConstructionPlacement("FoundationModel");
+                    break;
+                case "Wall":
+                    ConstructionManager.instance.ActivateConstructionPlacement("WallModel");
+                    break;
+            }
+        }
     }
     
     private void SetLayerRecursively(GameObject obj, int layer)

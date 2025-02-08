@@ -1,0 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+ 
+public class GhostItem : MonoBehaviour
+{
+    public BoxCollider solidCollider; // set manually
+ 
+    public Renderer mRenderer;
+    private Material semiTransparentMat; // Used for debug - insted of the full trasparent
+    private Material fullTransparentMat;
+    private Material selectedMaterial;
+ 
+    public bool isPlaced;
+ 
+    // A flag for the deletion algorithm
+    public bool hasSamePosition = false;
+    private void Start()
+    {
+        mRenderer = GetComponent<Renderer>();
+        // We get them from the manager, because this way the referece always exists.
+        semiTransparentMat = ConstructionManager.instance.ghostSemiTransparentMat;
+        fullTransparentMat = ConstructionManager.instance.ghostFullTransparentMat;
+        selectedMaterial = ConstructionManager.instance.ghostSelectedMat;
+ 
+        mRenderer.material = fullTransparentMat;
+
+        solidCollider.enabled = false;
+    }
+ 
+    private void Update()
+    {
+        if (ConstructionManager.instance.inConstructionMode)
+        {
+            var playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
+            Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), playerCollider);
+        }
+        
+        // We need the solid collider so the ray cast will detect it
+        if (ConstructionManager.instance.inConstructionMode && isPlaced)
+        {
+            solidCollider.enabled = true;
+        }
+ 
+        if (!ConstructionManager.instance.inConstructionMode)
+        {
+            solidCollider.enabled = false;
+        }
+ 
+        // Triggering the material
+        if(ConstructionManager.instance.selectedGhost == this.gameObject)
+        {
+            mRenderer.material = selectedMaterial;
+        }
+        else
+        {
+            mRenderer.material = semiTransparentMat; //change to semi if in debug else full
+        }
+    }
+}

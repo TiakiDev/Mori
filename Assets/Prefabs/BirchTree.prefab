@@ -231,5 +231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInRange: 0
   canBeChopped: 0
-  treeMaxHealth: 10
+  treeMaxHealth: 8
   treeHealth: 0
+  treeName: Birch Tree

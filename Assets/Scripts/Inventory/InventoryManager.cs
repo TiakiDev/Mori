@@ -44,6 +44,8 @@ public class InventoryManager : MonoBehaviour
             quickSlots[i].selectedShader.SetActive(false);
             quickSlots[i].UnequipItem();
         }
+        
+        ConstructionManager.instance.ExitConstructionMode();
     }
     private void Awake()
     {
@@ -83,6 +85,8 @@ public class InventoryManager : MonoBehaviour
             FirstPersonController.instance.cameraCanMove = false;
             FirstPersonController.instance.crosshairObject.gameObject.SetActive(false);
             SelectionManager.instance.interactionText.gameObject.SetActive(false);
+            
+            ConstructionManager.instance.ExitConstructionMode();
         }
         
         SlotChangingHandler();
