@@ -7,7 +7,6 @@ public class GhostItem : MonoBehaviour
     public BoxCollider solidCollider; // set manually
  
     public Renderer mRenderer;
-    private Material semiTransparentMat; // Used for debug - insted of the full trasparent
     private Material fullTransparentMat;
     private Material selectedMaterial;
  
@@ -18,8 +17,6 @@ public class GhostItem : MonoBehaviour
     private void Start()
     {
         mRenderer = GetComponent<Renderer>();
-        // We get them from the manager, because this way the referece always exists.
-        semiTransparentMat = ConstructionManager.instance.ghostSemiTransparentMat;
         fullTransparentMat = ConstructionManager.instance.ghostFullTransparentMat;
         selectedMaterial = ConstructionManager.instance.ghostSelectedMat;
  
@@ -54,7 +51,7 @@ public class GhostItem : MonoBehaviour
         }
         else
         {
-            mRenderer.material = semiTransparentMat; //change to semi if in debug else full
+            mRenderer.material = fullTransparentMat; //change to semi if in debug else full
         }
     }
 }

@@ -23,8 +23,12 @@ public class Constructable : MonoBehaviour
  
     private void Start()
     {
-        mRenderer = GetComponent<Renderer>();
- 
+        mRenderer = GetComponentInChildren<Renderer>();
+        // Ensure a Renderer is found; log an error if not
+        if (mRenderer == null)
+        {
+            Debug.LogError("Renderer not found on Constructable object or its children.", this);
+        }
         mRenderer.material = defaultMaterial;
         foreach (Transform child in transform)
         {

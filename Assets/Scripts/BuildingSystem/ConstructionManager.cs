@@ -18,7 +18,6 @@ public class ConstructionManager : MonoBehaviour
  
     // Materials we store as refereces for the ghosts
     public Material ghostSelectedMat;
-    public Material ghostSemiTransparentMat;
     public Material ghostFullTransparentMat;
  
     // We keep a reference to all ghosts currently in our world,
@@ -189,7 +188,7 @@ public class ConstructionManager : MonoBehaviour
         // Left Mouse Click to Place item
         if (Input.GetMouseButtonDown(0) && inConstructionMode && itemToBeConstructed != null)
         {
-            if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel") // We don't want the freestyle to be triggered when we select a ghost.
+            if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel")
             {
                 PlaceItemFreeStyle();
             }
@@ -199,7 +198,6 @@ public class ConstructionManager : MonoBehaviour
                 PlaceItemInGhostPosition(selectedGhost);
             }
         }
-        // Right Mouse Click to Cancel                      //TODO - don't destroy the ui item until you actually placed it.
         if (Input.GetMouseButtonDown(1))
         {     
             ExitConstructionMode();
@@ -214,6 +212,8 @@ public class ConstructionManager : MonoBehaviour
             itemToBeConstructed = null;
         }
         inConstructionMode = false;
+        selectedGhost = null;
+        selectingAGhost = false;
     }
  
     private void PlaceItemInGhostPosition(GameObject copyOfGhost)

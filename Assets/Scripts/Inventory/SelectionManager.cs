@@ -133,6 +133,7 @@ private void Update()
         pickaxeCursor.SetActive(false);
         axeCursor.SetActive(false);
         handCursor.SetActive(false);
+        infoHolder.gameObject.SetActive(false); 
     }
 
     // Ustaw widoczność celownika na podstawie aktywnych kursorów
