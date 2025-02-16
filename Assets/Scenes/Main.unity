@@ -9983,13 +9983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d311ee7299bea4e924667540510214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefabs:
-  - {fileID: 3868541366019040197, guid: 24752aa6d70a6d14c99250da95b786b4, type: 3}
-  - {fileID: 2660707074508002203, guid: 0f807dd270169ef4d879753f6e9f3691, type: 3}
-  - {fileID: 5292755435116355901, guid: 375d3b6c9090c404384de8d7efe060fc, type: 3}
-  numberOfTrees: 100
-  areaSize: {x: 50, y: 50}
-  terrain: {fileID: 282678147}
 --- !u!154 &282678146
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -28250,7 +28243,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -93.510376, y: -7.4002686}
+  m_AnchoredPosition: {x: -93.51416, y: -7.4002686}
   m_SizeDelta: {x: -209.5, y: -85.527}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &799047972

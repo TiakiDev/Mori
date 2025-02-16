@@ -136,73 +136,105 @@ public class ConstructionManager : MonoBehaviour
         return 0;
     }
  
-    private void Update()
+private void Update()
+{
+    if (itemToBeConstructed != null && inConstructionMode)
     {
- 
-        if (itemToBeConstructed != null && inConstructionMode)
+        if (!selectingAGhost)
         {
-            if (itemToBeConstructed.name  == "FoundationModel")
+            float rotationSpeed = 90f; // Stopni na kliknięcie
+            float rotationAmount = 45f; // Maksymalny kąt obrotu w górę/w dół
+
+            // Obracanie na boki za pomocą klawiszy Q i E (wokół osi Y)
+            if (Input.GetKeyDown(KeyCode.Q)) // Obracanie w lewo
             {
-                if (CheckValidConstructionPosition())
-                {
-                    isValidPlacement = true;
-                    itemToBeConstructed.GetComponent<Constructable>().SetValidColor(); 
-                }
-                else
-                {
-                    isValidPlacement = false;
-                    itemToBeConstructed.GetComponent<Constructable>().SetInvalidColor();
-                }
+                itemToBeConstructed.transform.Rotate(Vector3.up, -rotationSpeed, Space.World);
+            }
+            if (Input.GetKeyDown(KeyCode.E)) // Obracanie w prawo
+            {
+                itemToBeConstructed.transform.Rotate(Vector3.up, rotationSpeed, Space.World);
+            }
+
+            // Obracanie w górę i w dół za pomocą scrolla (wokół osi X)
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll != 0)
+            {
+                float currentRotationX = itemToBeConstructed.transform.eulerAngles.x;
+                float newRotationX = currentRotationX + scroll * rotationAmount;
+
+                // Ograniczenie obrotu do 45 stopni w górę i -45 stopni w dół
+                if (newRotationX > 315f) newRotationX -= 360f; // Normalizacja kąta
+                newRotationX = Mathf.Clamp(newRotationX, -45f, 45f);
+
+                itemToBeConstructed.transform.eulerAngles = new Vector3(newRotationX, itemToBeConstructed.transform.eulerAngles.y, itemToBeConstructed.transform.eulerAngles.z);
+            }
+        }
+
+        // Sprawdzenie poprawności umiejscowienia budowli
+        if (itemToBeConstructed.name == "FoundationModel")
+        {
+            if (CheckValidConstructionPosition())
+            {
+                isValidPlacement = true;
+                itemToBeConstructed.GetComponent<Constructable>().SetValidColor();
             }
             else
             {
+                isValidPlacement = false;
                 itemToBeConstructed.GetComponent<Constructable>().SetInvalidColor();
             }
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                var selectionTransform = hit.transform;
-                if (selectionTransform.gameObject.CompareTag("ghost") && itemToBeConstructed.name  == "FoundationModel")
-                {
-                    itemToBeConstructed.SetActive(false);
-                    selectingAGhost = true;
-                    selectedGhost = selectionTransform.gameObject;
-                }
-                else if (selectionTransform.gameObject.CompareTag("wallGhost") && itemToBeConstructed.name  == "WallModel")
-                {
-                    itemToBeConstructed.SetActive(false);
-                    selectingAGhost = true;
-                    selectedGhost = selectionTransform.gameObject;
-                }
-                else
-                {
-                    itemToBeConstructed.SetActive(true);
-                    selectedGhost = null;
-                    selectingAGhost = false;
-                }
- 
-            }
         }
- 
-        // Left Mouse Click to Place item
-        if (Input.GetMouseButtonDown(0) && inConstructionMode && itemToBeConstructed != null)
+        else
         {
-            if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel")
-            {
-                PlaceItemFreeStyle();
-            }
- 
-            if (selectingAGhost)
-            {
-                PlaceItemInGhostPosition(selectedGhost);
-            }
+            itemToBeConstructed.GetComponent<Constructable>().SetInvalidColor();
         }
-        if (Input.GetMouseButtonDown(1))
-        {     
-            ExitConstructionMode();
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            var selectionTransform = hit.transform;
+            if (selectionTransform.gameObject.CompareTag("ghost") && itemToBeConstructed.name == "FoundationModel")
+            {
+                itemToBeConstructed.SetActive(false);
+                selectingAGhost = true;
+                selectedGhost = selectionTransform.gameObject;
+            }
+            else if (selectionTransform.gameObject.CompareTag("wallGhost") && itemToBeConstructed.name == "WallModel")
+            {
+                itemToBeConstructed.SetActive(false);
+                selectingAGhost = true;
+                selectedGhost = selectionTransform.gameObject;
+            }
+            else
+            {
+                itemToBeConstructed.SetActive(true);
+                selectedGhost = null;
+                selectingAGhost = false;
+            }
         }
     }
+
+    // Kliknięcie lewym przyciskiem myszy, aby umieścić obiekt
+    if (Input.GetMouseButtonDown(0) && inConstructionMode && itemToBeConstructed != null)
+    {
+        if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel")
+        {
+            PlaceItemFreeStyle();
+        }
+
+        if (selectingAGhost)
+        {
+            PlaceItemInGhostPosition(selectedGhost);
+        }
+    }
+
+    // Kliknięcie prawym przyciskiem myszy, aby wyjść z trybu budowy
+    if (Input.GetMouseButtonDown(1))
+    {
+        ExitConstructionMode();
+    }
+}
+
 
     public void ExitConstructionMode()
     {
@@ -229,8 +261,9 @@ public class ConstructionManager : MonoBehaviour
         itemToBeConstructed.gameObject.SetActive(true);
         // Setting the parent to be the root of our scene
         itemToBeConstructed.transform.SetParent(transform.parent, true);
- 
+
         itemToBeConstructed.transform.position = new Vector3(ghostPosition.x, ghostPosition.y, ghostPosition.z  + randomOffset);
+
         itemToBeConstructed.transform.rotation = ghostRotation;
         
         itemToBeConstructed.GetComponent<Constructable>().SetDefaultColor();

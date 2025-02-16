@@ -89,7 +89,16 @@ public class InventoryManager : MonoBehaviour
             ConstructionManager.instance.ExitConstructionMode();
         }
         
-        SlotChangingHandler();
+        //SlotChangingHandler();
+        for (int i = 0; i < quickSlots.Count; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                currentSlotIndex = i;
+                quickSlots[i].SelectSlot();
+                break;
+            }
+        }
         
     }
     
