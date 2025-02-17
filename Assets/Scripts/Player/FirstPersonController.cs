@@ -129,6 +129,10 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    //swimming
+    public bool isSwimming;
+    public float swimmingGravity = 0.5f;
+
     private void Awake()
     {
         if(instance != null && instance != this)
@@ -387,6 +391,24 @@ public class FirstPersonController : MonoBehaviour
 
         if (playerCanMove)
         {
+            if (isSwimming)
+            {
+                Debug.Log("swimming");
+                walkSpeed = 3.5f;
+                enableSprint = false;
+                enableCrouch = false;
+                rb.mass = 0.5f;
+                jumpPower = 2f;
+            }
+            else
+            {
+                walkSpeed = 5f;
+                enableSprint = true;
+                enableCrouch = true;
+                rb.mass = 1f;
+                jumpPower = 6f;
+            }
+            
             // Calculate how fast we should be moving
             Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 

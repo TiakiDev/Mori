@@ -13,6 +13,8 @@ public class InventoryManager : MonoBehaviour
     private int currentSlotIndex = 0;  // Aktualnie wybrany slot
     private float accumulatedScroll;   // Akumulowana wartość scrolla
     
+    public bool canChangeSlots = true;
+    
     public List<Slot> itemSlots = new List<Slot>();
     public List<QuickSlot> quickSlots = new List<QuickSlot>();
 
@@ -88,8 +90,11 @@ public class InventoryManager : MonoBehaviour
             
             ConstructionManager.instance.ExitConstructionMode();
         }
-        
-        //SlotChangingHandler();
+
+        if (canChangeSlots)
+        {
+            SlotChangingHandler();
+        }
         for (int i = 0; i < quickSlots.Count; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
@@ -104,17 +109,6 @@ public class InventoryManager : MonoBehaviour
     
     private void SlotChangingHandler()
     {
-        //możesz se zmieniac sloty 1 2 3 4
-        // Obsługa klawiszy 1-6
-        for (int i = 0; i < quickSlots.Count; i++)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-            {
-                currentSlotIndex = i;
-                quickSlots[i].SelectSlot();
-                break;
-            }
-        }
 
         // Obsługa scrolla
         accumulatedScroll += Input.GetAxis("Mouse ScrollWheel");

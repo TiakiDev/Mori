@@ -138,22 +138,23 @@ public class ConstructionManager : MonoBehaviour
  
 private void Update()
 {
+    if (inConstructionMode)
+    {
+        InventoryManager.instance.canChangeSlots = false;
+    }
+    else
+    {
+        InventoryManager.instance.canChangeSlots = true;
+    }
+    
+
     if (itemToBeConstructed != null && inConstructionMode)
     {
-        if (!selectingAGhost)
+        //metoda obracania w górę i w dół za pomocą scrolla 
+        if (!selectingAGhost && itemToBeConstructed.name == "FoundationModel")
         {
             float rotationSpeed = 90f; // Stopni na kliknięcie
             float rotationAmount = 45f; // Maksymalny kąt obrotu w górę/w dół
-
-            // Obracanie na boki za pomocą klawiszy Q i E (wokół osi Y)
-            if (Input.GetKeyDown(KeyCode.Q)) // Obracanie w lewo
-            {
-                itemToBeConstructed.transform.Rotate(Vector3.up, -rotationSpeed, Space.World);
-            }
-            if (Input.GetKeyDown(KeyCode.E)) // Obracanie w prawo
-            {
-                itemToBeConstructed.transform.Rotate(Vector3.up, rotationSpeed, Space.World);
-            }
 
             // Obracanie w górę i w dół za pomocą scrolla (wokół osi X)
             float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -164,7 +165,7 @@ private void Update()
 
                 // Ograniczenie obrotu do 45 stopni w górę i -45 stopni w dół
                 if (newRotationX > 315f) newRotationX -= 360f; // Normalizacja kąta
-                newRotationX = Mathf.Clamp(newRotationX, -45f, 45f);
+                newRotationX = Mathf.Clamp(newRotationX, -25f, 15f);
 
                 itemToBeConstructed.transform.eulerAngles = new Vector3(newRotationX, itemToBeConstructed.transform.eulerAngles.y, itemToBeConstructed.transform.eulerAngles.z);
             }
