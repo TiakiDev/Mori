@@ -1,87 +1,141 @@
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
- 
+
 public class Constructable : MonoBehaviour
 {
+    [Header("Settings")]
+    public bool canSnapToStructures = false;
+    
+    [Space]
+    
+    [Header("Other")]
     // Validation
     public bool isGrounded;
     public bool isOverlappingItems;
     public bool isValidToBeBuilt;
     public bool detectedGhostMemeber;
- 
+
+    // Ground check
+    public float maxGroundDistance = 1.5f;
+    public float surfaceOffset = 0.1f;
+    public LayerMask groundLayer;
+
+
     // Material related
     private Renderer mRenderer;
     public Material redMaterial;
     public Material greenMaterial;
     public Material defaultMaterial;
- 
+
     public List<GameObject> ghostList = new List<GameObject>();
- 
-    public BoxCollider solidCollider; // We need to drag this collider manualy into the inspector
- 
+    public BoxCollider solidCollider;
+
     private void Start()
     {
         mRenderer = GetComponentInChildren<Renderer>();
-        // Ensure a Renderer is found; log an error if not
-        if (mRenderer == null)
-        {
-            Debug.LogError("Renderer not found on Constructable object or its children.", this);
-        }
+        if(mRenderer == null) Debug.LogError("Renderer not found", this);
         mRenderer.material = defaultMaterial;
-        foreach (Transform child in transform)
+        
+        foreach(Transform child in transform)
         {
             ghostList.Add(child.gameObject);
         }
- 
     }
+
     void Update()
     {
-        if (isGrounded && isOverlappingItems == false)
+        bool isNearSurface = CheckSurfaceProximity();
+        
+        if(isGrounded && !isOverlappingItems && isNearSurface)
         {
             isValidToBeBuilt = true;
-        } 
+        }
         else
         {
             isValidToBeBuilt = false;
         }
     }
- 
+
+    private bool CheckSurfaceProximity()
+    {
+        LayerMask checkLayers = groundLayer;
+        if(canSnapToStructures)
+        {
+            checkLayers |= LayerMask.GetMask("Structure");
+        }
+
+        Ray ray = new Ray(transform.position + Vector3.up * 0.5f, Vector3.down);
+        
+        if(Physics.Raycast(ray, out RaycastHit hit, maxGroundDistance, checkLayers))
+        {
+            transform.position = hit.point + Vector3.up * surfaceOffset;
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            return true;
+        }
+        return false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ground") && gameObject.CompareTag("activeConstructable"))
+        if (gameObject.CompareTag("activeConstructable"))
         {
-            isGrounded = true; 
-        }
- 
-        if (other.CompareTag("Tree") || other.CompareTag("pickable") && gameObject.CompareTag("activeConstructable"))
-        {
- 
-            isOverlappingItems = true;
-        }
- 
-        if (other.gameObject.CompareTag("ghost") && gameObject.CompareTag("activeConstructable"))
-        {
-            detectedGhostMemeber = true;
+            if (other.CompareTag("Tree") || 
+                other.CompareTag("pickable") || 
+                other.CompareTag("Structure") || 
+                other.CompareTag("Rock"))
+            {
+                isOverlappingItems = true;
+            }
+
+            if (other.CompareTag("Ground"))
+            {
+                isGrounded = true;
+            }
+
+            if (other.CompareTag("ghost"))
+            {
+                detectedGhostMemeber = true;
+            }
         }
     }
- 
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Ground") && gameObject.CompareTag("activeConstructable"))
+        if (gameObject.CompareTag("activeConstructable"))
         {
-            isGrounded = false;
+            if (other.CompareTag("Tree") || 
+                other.CompareTag("pickable") || 
+                other.CompareTag("Structure") ||
+                other.CompareTag("Rock"))
+            {
+                isOverlappingItems = false;
+            }
+
+            if (other.CompareTag("Ground"))
+            {
+                isGrounded = false;
+            }
+
+            if (other.CompareTag("ghost"))
+            {
+                detectedGhostMemeber = false;
+            }
         }
- 
-        if (other.CompareTag("Tree") || other.CompareTag("pickable") && gameObject.CompareTag("activeConstructable"))
+    }
+    
+    private void OnTriggerStay(Collider other)
+    {
+        if (gameObject.CompareTag("activeConstructable"))
         {
-            isOverlappingItems = false;
-        }
- 
-        if (other.gameObject.CompareTag("ghost") && gameObject.CompareTag("activeConstructable"))
-        {
-            detectedGhostMemeber = false;
+            if (other.CompareTag("Tree") || 
+                other.CompareTag("pickable") || 
+                other.CompareTag("Structure")|| 
+                other.CompareTag("Rock"))
+            {
+                isOverlappingItems = true;
+            }
         }
     }
  
@@ -108,7 +162,6 @@ public class Constructable : MonoBehaviour
         foreach (GameObject item in ghostList)
         {
             item.transform.SetParent(transform.parent, true);
-          //  item.gameObject.GetComponent<GhostItem>().solidCollider.enabled = false;
             item.gameObject.GetComponent<GhostItem>().isPlaced = true;
         }
     }

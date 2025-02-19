@@ -11,7 +11,7 @@ public class GhostItem : MonoBehaviour
     private Material selectedMaterial;
  
     public bool isPlaced;
- 
+    public float activeDistance = 5f;
     // A flag for the deletion algorithm
     public bool hasSamePosition = false;
     private void Start()
@@ -27,6 +27,30 @@ public class GhostItem : MonoBehaviour
  
     private void Update()
     {
+        if(ConstructionManager.instance.inConstructionMode)
+        {
+            // Ignoruj kolizje z aktualnym obiektem budowanym
+            if(ConstructionManager.instance.itemToBeConstructed != null)
+            {
+                Collider constructableCollider = ConstructionManager.instance.itemToBeConstructed.GetComponent<Collider>();
+                if(constructableCollider != null)
+                {
+                    Physics.IgnoreCollision(solidCollider, constructableCollider);
+                }
+            }
+        }
+        
+        
+        if(ConstructionManager.instance.inConstructionMode)
+        {
+            float distanceToPlayer = Vector3.Distance(
+                transform.position, 
+                GameObject.FindGameObjectWithTag("Player").transform.position
+            );
+
+            solidCollider.enabled = distanceToPlayer <= activeDistance;
+        }
+        
         if (ConstructionManager.instance.inConstructionMode)
         {
             Collider playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();

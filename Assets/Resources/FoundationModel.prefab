@@ -51,6 +51,7 @@ MonoBehaviour:
   solidCollider: {fileID: 1699220269184041293}
   mRenderer: {fileID: 1219585505883403248}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &1219585505883403248
 MeshRenderer:
@@ -195,6 +196,7 @@ MonoBehaviour:
   solidCollider: {fileID: 7972835439929466609}
   mRenderer: {fileID: 5559897669360196311}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &5559897669360196311
 MeshRenderer:
@@ -303,7 +305,7 @@ GameObject:
   - component: {fileID: 1104913343989013767}
   - component: {fileID: 2219318649235558088}
   - component: {fileID: 5957405637783094989}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FoundationModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,10 +420,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dd4f942065e0d42b042f85b4b1111f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canSnapToStructures: 0
   isGrounded: 0
   isOverlappingItems: 0
   isValidToBeBuilt: 0
   detectedGhostMemeber: 0
+  maxGroundDistance: 2
+  surfaceOffset: 0.7
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
   redMaterial: {fileID: 2100000, guid: 156b4043a15b3c146b41b5a29d60182b, type: 2}
   greenMaterial: {fileID: 2100000, guid: 18cae7e13599baf4dad508e5289fbc59, type: 2}
   defaultMaterial: {fileID: 2100000, guid: c2cf075d50d57b0458239dbaa6d06f2f, type: 2}
@@ -528,6 +536,7 @@ MonoBehaviour:
   solidCollider: {fileID: 6980033569222686364}
   mRenderer: {fileID: 4146968111521252657}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &4146968111521252657
 MeshRenderer:
@@ -672,6 +681,7 @@ MonoBehaviour:
   solidCollider: {fileID: 8155690832492624976}
   mRenderer: {fileID: 6103850445214584914}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &6103850445214584914
 MeshRenderer:
@@ -816,6 +826,7 @@ MonoBehaviour:
   solidCollider: {fileID: 2473740231512184516}
   mRenderer: {fileID: 2994913281223904490}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &2994913281223904490
 MeshRenderer:
@@ -960,6 +971,7 @@ MonoBehaviour:
   solidCollider: {fileID: 8296452895618658239}
   mRenderer: {fileID: 1229568523094282867}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &1229568523094282867
 MeshRenderer:
@@ -1104,6 +1116,7 @@ MonoBehaviour:
   solidCollider: {fileID: 3655017555433655267}
   mRenderer: {fileID: 7170673996137190396}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &7170673996137190396
 MeshRenderer:
@@ -1248,6 +1261,7 @@ MonoBehaviour:
   solidCollider: {fileID: 8724822580525015145}
   mRenderer: {fileID: 8616410164965543982}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &8616410164965543982
 MeshRenderer:
@@ -1392,6 +1406,7 @@ MonoBehaviour:
   solidCollider: {fileID: 4995215033477491387}
   mRenderer: {fileID: 5221078250193759774}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &5221078250193759774
 MeshRenderer:
@@ -1536,6 +1551,7 @@ MonoBehaviour:
   solidCollider: {fileID: 3888766811726432717}
   mRenderer: {fileID: 2322057830445694779}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &2322057830445694779
 MeshRenderer:
@@ -1680,6 +1696,7 @@ MonoBehaviour:
   solidCollider: {fileID: 8430055997660696484}
   mRenderer: {fileID: 6691330147783730222}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &6691330147783730222
 MeshRenderer:
@@ -1824,6 +1841,7 @@ MonoBehaviour:
   solidCollider: {fileID: 452393708615773629}
   mRenderer: {fileID: 1554172078627064805}
   isPlaced: 0
+  activeDistance: 5
   hasSamePosition: 0
 --- !u!23 &1554172078627064805
 MeshRenderer:

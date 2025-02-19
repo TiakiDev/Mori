@@ -124,6 +124,9 @@ public class QuickSlot : MonoBehaviour
                 case "Wall":
                     ConstructionManager.instance.ActivateConstructionPlacement("WallModel");
                     break;
+                case "Chest":
+                    ConstructionManager.instance.ActivateConstructionPlacement("ChestModel");
+                    break;
             }
         }
     }

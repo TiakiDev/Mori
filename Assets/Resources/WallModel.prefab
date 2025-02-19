@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6081772333653063844}
   - component: {fileID: 5866689733560622623}
   - component: {fileID: 1126078228665193090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,10 +126,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dd4f942065e0d42b042f85b4b1111f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canSnapToStructures: 0
   isGrounded: 0
   isOverlappingItems: 0
   isValidToBeBuilt: 0
   detectedGhostMemeber: 0
+  maxGroundDistance: 1.5
+  surfaceOffset: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
   redMaterial: {fileID: 2100000, guid: a130e5a64eebabf499965fdde76278ad, type: 2}
   greenMaterial: {fileID: 2100000, guid: bc3e9726e4d384140b428935173b5cec, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 730e682993b0c7a40943ba28adab5e86, type: 2}
