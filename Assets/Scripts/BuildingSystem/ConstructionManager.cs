@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
  
 public class ConstructionManager : MonoBehaviour
@@ -69,28 +70,19 @@ private void Update()
 
     if (itemToBeConstructed != null && inConstructionMode)
     {
-        if (!selectingAGhost && itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.name == "ChestModel")
+        if (!selectingAGhost && itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.GetComponent<Constructable>().isProp)
         {
             SnapToSurface();
         }
 
         // Sprawdzenie poprawności umiejscowienia budowli
-        if (itemToBeConstructed.name is "FoundationModel" or "ChestModel")
+        if (itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.GetComponent<Constructable>().isProp)
         {
-            if (CheckValidConstructionPosition())
-            {
-                isValidPlacement = true;
-                itemToBeConstructed.GetComponent<Constructable>().SetValidColor();
-            }
-            else
-            {
-                isValidPlacement = false;
-                itemToBeConstructed.GetComponent<Constructable>().SetInvalidColor();
-            }
+            isValidPlacement = CheckValidConstructionPosition();
         }
         else
         {
-            itemToBeConstructed.GetComponent<Constructable>().SetInvalidColor();
+            isValidPlacement = false;
         }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -121,7 +113,7 @@ private void Update()
     
     if (Input.GetMouseButtonDown(0) && inConstructionMode && itemToBeConstructed != null)
     {
-        if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.name == "ChestModel")
+        if (isValidPlacement && selectedGhost == null && itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.GetComponent<Constructable>().isProp && itemToBeConstructed.GetComponent<Constructable>().isValidToBeBuilt)
         {
             PlaceItemFreeStyle();
         }
@@ -218,6 +210,8 @@ private void Update()
 
         itemToBeConstructed = null;
         inConstructionMode = false;
+        
+        ProcessBuildingCost();
     }
 
     private void PlaceItemFreeStyle()
@@ -234,22 +228,42 @@ private void Update()
         constructable.enabled = false;
         constructable.solidCollider.enabled = true;
 
-        itemToBeConstructed.tag = "placedFoundation";
-    
+        if (itemToBeConstructed.name == "FoundationModel")
+        {
+            itemToBeConstructed.tag = "placedFoundation";
+        }
+        else
+        {
+            itemToBeConstructed.tag = "placedProp";
+        }
         GetAllGhosts(itemToBeConstructed);
         PerformGhostDeletionScan();
 
         itemToBeConstructed = null;
         inConstructionMode = false;
+        
+        ProcessBuildingCost();
     }
+
+    private void ProcessBuildingCost()
+    {
+        foreach (var slot in InventoryManager.instance.quickSlots)
+        {
+            if (slot.isSelected)
+            {
+                slot.GetComponent<Slot>().RemoveItem(1);
+            }
+        }
+    }
+    
  
     private bool CheckValidConstructionPosition()
     {
         if (itemToBeConstructed != null)
         {
             var constructable = itemToBeConstructed.GetComponent<Constructable>();
-            
-            // Dodatkowe sprawdzenie czy nie nachodzi na inne struktury
+
+            // Sprawdzenie, czy obiekt nie nachodzi na inne struktury
             bool isOverlappingStructures = Physics.CheckBox(
                 constructable.transform.position,
                 constructable.solidCollider.size / 2,
@@ -257,10 +271,29 @@ private void Update()
                 LayerMask.GetMask("Structure")
             );
 
-            return constructable.isValidToBeBuilt && !isOverlappingStructures;
+            bool isValid = constructable.isValidToBeBuilt && !isOverlappingStructures;
+
+            // Ustawienie koloru w zależności od wyniku
+            if (isValid)
+            {
+                constructable.SetValidColor(); // Zielony kolor
+            }
+            else if(constructable.isValidToBeBuilt && constructable.isProp)
+            {
+                constructable.SetValidColor(); // Zielony kolor
+            }
+            else
+            {
+                constructable.SetInvalidColor(); // Czerwony kolor
+            }
+
+            Debug.Log($"Sprawdzam pozycję dla {itemToBeConstructed.name} | isValid: {constructable.isValidToBeBuilt} | Overlap: {isOverlappingStructures} | Final Valid: {isValid}");
+
+            return isValid;
         }
         return false;
     }
+
     
      
 

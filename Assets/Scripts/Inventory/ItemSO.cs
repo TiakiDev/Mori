@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu (fileName = "New Item", menuName = "Inventory/Item")]
@@ -27,7 +24,4 @@ public class ItemSO : ScriptableObject
     public float hungerAmount;
     public float thirstAmount;
     public float healthAmount;
-
-
-
 }

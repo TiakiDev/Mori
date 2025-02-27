@@ -7,6 +7,8 @@ public class Constructable : MonoBehaviour
 {
     [Header("Settings")]
     public bool canSnapToStructures = false;
+
+    public bool isProp;
     
     [Space]
     

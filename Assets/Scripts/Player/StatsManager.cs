@@ -12,6 +12,7 @@ public class StatsManager : MonoBehaviour
     public float health;
     public float hunger;
     public float thirst;
+    public float oxygen;
     [Space]
     [Header("Hunger & Thirst Depletion")]
     [SerializeField] private float hungerDepletionRate = 1f; // 1 punkt na sekundę
@@ -24,11 +25,16 @@ public class StatsManager : MonoBehaviour
     [SerializeField] private int lowThirstThreshold = 10;
     [SerializeField] private float healthDrainInterval = 5f;
     [SerializeField] private int healthDrainAmount = 1;
+    [Header("Oxygen Drain Settings")]
+    [SerializeField] private float oxygenDrainInterval = 1f;
+    [SerializeField] private int oxygenDrainAmount = 1;
     [Space]
     [Header("References")]
     [SerializeField] private Image healthBar;
     [SerializeField] private Image foodBar;
     [SerializeField] private Image waterBar;
+    [SerializeField] private Image oxygenBar;
+    [SerializeField] public GameObject oxygenBarGameobject;
     
     //*Internal variables
     
@@ -36,9 +42,11 @@ public class StatsManager : MonoBehaviour
     private float hungerTimer;
     private float thirstTimer;
     private float healthDrainTimer;
+    private float oxygenDrainTimer;
     //Depletion Intervals
     [HideInInspector] public float hungerDepletionInterval;
     [HideInInspector] public float thirstDepletionInterval;
+    [HideInInspector] public bool shouldDrainOxygen;
 
     private void Start()
     {
@@ -46,9 +54,24 @@ public class StatsManager : MonoBehaviour
         hungerDepletionInterval = defaultHungerDepletionInterval;
         thirstDepletionInterval = defaultThirstDepletionInterval;
         
+        
         health = maxHealth;
         hunger = 100;
         thirst = 100;
+        oxygen = 100;
+    }
+    
+    private void Update()
+    {
+        HandleStatDepletion();
+        HandleHealthDrain();
+        HandleOxygenDrain();
+        
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+            Debug.Log("Player died");
+        }
     }
 
     private void UpdateBars()
@@ -56,6 +79,7 @@ public class StatsManager : MonoBehaviour
         healthBar.fillAmount = health / maxHealth;
         foodBar.fillAmount = hunger / 100;
         waterBar.fillAmount = thirst / 100;
+        oxygenBar.fillAmount = oxygen / 100;
     }
     
     public void ChangeHealth(float amount)
@@ -77,18 +101,12 @@ public class StatsManager : MonoBehaviour
         UpdateBars();
     }
     
-    private void Update()
+    public void ChangeOxygen(float amount)
     {
-        HandleStatDepletion();
-        HandleHealthDrain();
-        
-        if(health <= 0)
-        {
-            Destroy(gameObject);
-            Debug.Log("Player died");
-        }
+        oxygen += amount;
+        oxygen = Mathf.Clamp(oxygen, 0, 100);
+        UpdateBars();
     }
-
     private void HandleHealthDrain()
     {
         bool shouldDrainHealth = hunger <= lowHungerThreshold || thirst <= lowThirstThreshold;
@@ -106,6 +124,20 @@ public class StatsManager : MonoBehaviour
         else
         {
             healthDrainTimer = 0f;
+        }
+    }
+    
+    private void HandleOxygenDrain()
+    {
+        if (shouldDrainOxygen)
+        {
+            oxygen -= oxygenDrainAmount * Time.deltaTime;
+            oxygen = Mathf.Clamp(oxygen, 0, 100);
+            UpdateBars();
+        }
+        if(oxygen <= 0)
+        {
+            ChangeHealth(-healthDrainAmount * Time.deltaTime);
         }
     }
     

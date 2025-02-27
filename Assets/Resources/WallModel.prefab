@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canSnapToStructures: 0
+  isProp: 0
   isGrounded: 0
   isOverlappingItems: 0
   isValidToBeBuilt: 0

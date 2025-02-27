@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,11 +18,12 @@ public class SelectionManager : MonoBehaviour
     public GameObject handCursor;
     public GameObject axeCursor;
     public GameObject pickaxeCursor;
+    public GameObject interactionCursor;
     //targets variables
     [Space(2)]
     public InteractableObject currentTarget;
     public bool onTarget;
-    //tree variables
+    //resource variables
     public GameObject selectedTree;
     public GameObject selectedOre;
     
@@ -58,6 +60,7 @@ private void Update()
         ChoppableTree choppableTree = selectionTransform.GetComponent<ChoppableTree>();
         MineableOre mineableOre = selectionTransform.GetComponent<MineableOre>();
         Item item = selectionTransform.GetComponent<Item>();
+        Chest chest = selectionTransform.GetComponent<Chest>();
 
         // Obsługa drzew
         if (choppableTree && choppableTree.playerInRange)
@@ -125,6 +128,22 @@ private void Update()
             onTarget = false;
             interactionText.alpha = 0;
         }
+        
+        // Obsługa skrzyni
+        if (chest && interactable.playerInRange && onTarget)
+        {
+            interactionCursor.SetActive(true);
+            anyCursorActive = true;
+            
+            if (Input.GetKeyDown(KeyCode.Mouse0) && currentTarget != null && currentTarget.playerInRange && chest)
+            {
+                chest.Interact();
+            }
+        }
+        else
+        {
+            interactionCursor.SetActive(false);
+        }
     }
     else
     {
@@ -133,6 +152,7 @@ private void Update()
         pickaxeCursor.SetActive(false);
         axeCursor.SetActive(false);
         handCursor.SetActive(false);
+        interactionCursor.SetActive(false);
         infoHolder.gameObject.SetActive(false); 
     }
 

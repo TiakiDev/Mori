@@ -9,6 +9,10 @@ public class InventoryManager : MonoBehaviour
     public bool isOpen;
 
     [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject chestPanel;
+
+    [SerializeField] private GameObject crosshairs;
+    [SerializeField] private GameObject infoHolder;
     
     private int currentSlotIndex = 0;  // Aktualnie wybrany slot
     private float accumulatedScroll;   // Akumulowana wartość scrolla
@@ -17,6 +21,10 @@ public class InventoryManager : MonoBehaviour
     
     public List<Slot> itemSlots = new List<Slot>();
     public List<QuickSlot> quickSlots = new List<QuickSlot>();
+    
+    //chest
+    public List<Slot> chestSlots = new List<Slot>();
+    public Chest currentChest;
 
     public void AddItem(ItemSO item, int amount = 1)
     {
@@ -63,6 +71,100 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         inventoryPanel.SetActive(false);
+        chestPanel.SetActive(false); // DODAJ TO
+    }
+    
+    public void OpenChest(Chest chest)
+    {
+        if (currentChest != null) return;
+    
+        currentChest = chest;
+        //inventoryPanel.SetActive(true); //TODO: odkomentuj
+        chestPanel.SetActive(true);
+        isOpen = true;
+        crosshairs.SetActive(false);
+        
+        //jak chest nie ma slotów to je dodaje
+        while(currentChest.slots.Count < chestSlots.Count)
+        {
+            currentChest.slots.Add(new ChestSlot());
+        }
+    
+        RefreshChestUI();
+        
+        FirstPersonController.instance.lockCursor = false;
+        FirstPersonController.instance.cameraCanMove = false;
+        FirstPersonController.instance.crosshairObject.gameObject.SetActive(false);
+        SelectionManager.instance.interactionText.gameObject.SetActive(false);
+            
+        ConstructionManager.instance.ExitConstructionMode();
+    }
+    
+    public void RefreshChestUI()
+    {
+        for (int i = 0; i < chestSlots.Count; i++)
+        {
+            if (i < currentChest.slots.Count && currentChest.slots[i].itemSO != null)
+            {
+                chestSlots[i].ForceSetItem(
+                    currentChest.slots[i].itemSO,
+                    currentChest.slots[i].quantity
+                );
+            }
+            else
+            {
+                chestSlots[i].ForceSetItem(null, 0);
+            }
+        }
+    }
+    
+    public void SaveChestData()
+    {
+        if (currentChest != null)
+        {
+            currentChest.slots.Clear();
+        
+            foreach (Slot slot in chestSlots)
+            {
+                if (slot.itemSO != null && slot.itemSO.itemIcon != null)
+                {
+                    currentChest.slots.Add(new ChestSlot {
+                        itemSO = slot.itemSO,
+                        quantity = slot.quantity
+                    });
+                }
+                else
+                {
+                    currentChest.slots.Add(new ChestSlot());
+                }
+            }
+        }
+    }
+
+    private void CloseAllTabs()
+    {
+        inventoryPanel.SetActive(false);
+        chestPanel.SetActive(false);
+        isOpen = false;
+            
+        FirstPersonController.instance.lockCursor = true;
+        FirstPersonController.instance.cameraCanMove = true;
+        FirstPersonController.instance.crosshairObject.gameObject.SetActive(true);
+        SelectionManager.instance.interactionText.gameObject.SetActive(true);
+        TooltipManager.instance.HideTooltip();
+        
+        //chest stuff
+        chestPanel.SetActive(false);
+        chestPanel.SetActive(false);
+        SaveChestData();
+                
+        foreach (Slot slot in chestSlots)
+        {
+            slot.ClearSlot();
+        }
+    
+        currentChest = null;
+        crosshairs.SetActive(true);
     }
     
     private void Update()
@@ -70,14 +172,7 @@ public class InventoryManager : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Tab) && isOpen)
         {
-            inventoryPanel.SetActive(false);
-            isOpen = false;
-            
-            FirstPersonController.instance.lockCursor = true;
-            FirstPersonController.instance.cameraCanMove = true;
-            FirstPersonController.instance.crosshairObject.gameObject.SetActive(true);
-            SelectionManager.instance.interactionText.gameObject.SetActive(true);
-            TooltipManager.instance.HideTooltip();
+            CloseAllTabs();
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && !isOpen)
         {
@@ -89,6 +184,8 @@ public class InventoryManager : MonoBehaviour
             SelectionManager.instance.interactionText.gameObject.SetActive(false);
             
             ConstructionManager.instance.ExitConstructionMode();
+            
+            crosshairs.SetActive(false);
         }
 
         if (canChangeSlots)

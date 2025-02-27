@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wall
   m_EditorClassIdentifier: 
   itemName: Wall
-  itemIcon: {fileID: 21300000, guid: 3d7d7fd186faaa64e95d491160979e0d, type: 3}
+  itemIcon: {fileID: 21300000, guid: 73277e31f115bb245a69e17ad2d3a4af, type: 3}
   itemDescription: 
   itemType: 3
   hungerAmount: 0

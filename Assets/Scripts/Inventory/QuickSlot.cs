@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,14 +8,11 @@ public class QuickSlot : MonoBehaviour
     public bool isSelected;
     public GameObject toolHolder;
     public GameObject itemModel;
-    
     private bool isEquipped;
-    private Animator toolHolderAnimator;
-    
+
     private void Start()
     {
         slot = GetComponent<Slot>();
-        toolHolderAnimator = toolHolder.GetComponent<Animator>();
         selectedShader.SetActive(false);
         isEquipped = false;
     }
@@ -78,8 +72,17 @@ public class QuickSlot : MonoBehaviour
     
     private void SetEquippedItem(ItemSO item)
     {
-        GameObject modelPrefab = Resources.Load<GameObject>("EquipableModels/" + item.itemName + "_Model");
-
+        GameObject modelPrefab;
+        
+        if (item.itemType == ItemSO.ItemType.Constructable)
+        {
+            modelPrefab = Resources.Load<GameObject>("EquipableModels/Empty_Model");
+        }
+        else
+        {
+            modelPrefab = Resources.Load<GameObject>("EquipableModels/" + item.itemName + "_Model");
+        }
+        
         if (modelPrefab != null)
         {
             itemModel = Instantiate(

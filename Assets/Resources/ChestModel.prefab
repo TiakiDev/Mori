@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -8502493567529877674}
   - component: {fileID: -2718834629746211794}
   - component: {fileID: -8397130206120942474}
+  - component: {fileID: -7759405371950348444}
   m_Layer: 9
   m_Name: ChestModel
   m_TagString: Untagged
@@ -99,18 +100,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dd4f942065e0d42b042f85b4b1111f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canSnapToStructures: 0
+  canSnapToStructures: 1
+  isProp: 1
   isGrounded: 0
   isOverlappingItems: 0
   isValidToBeBuilt: 0
   detectedGhostMemeber: 0
-  maxGroundDistance: 1.5
-  surfaceOffset: 0.1
+  maxGroundDistance: 1
+  surfaceOffset: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
   redMaterial: {fileID: 2100000, guid: 156b4043a15b3c146b41b5a29d60182b, type: 2}
-  greenMaterial: {fileID: 2100000, guid: 18cae7e13599baf4dad508e5289fbc59, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 5b97a5732664cd94c86e01cfbe655e62, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 8436d7f4fe47cf14a94216deb0dd5cd5, type: 2}
   ghostList: []
   solidCollider: {fileID: -8397130206120942474}
@@ -160,7 +162,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.94643974, y: 0.49450785, z: 0.5153748}
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: -0.0020997673, y: 0.24725392, z: 0.0014664978}
 --- !u!65 &-8397130206120942474
 BoxCollider:
@@ -183,3 +185,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.94643974, y: 0.49450785, z: 0.5153748}
   m_Center: {x: -0.0020997673, y: 0.24725392, z: 0.0014664978}
+--- !u!114 &-7759405371950348444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443646633937670674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2503588b813b52a4fa2b1db0ce0bb139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: Chest
+  playerInRange: 0
+  slots: []

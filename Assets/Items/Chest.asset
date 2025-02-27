@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Chest
   m_EditorClassIdentifier: 
   itemName: Chest
-  itemIcon: {fileID: 21300000, guid: 666541b902288964380809b3e1768072, type: 3}
+  itemIcon: {fileID: 21300000, guid: b231debd78ef32b48b2453a56f3cabb3, type: 3}
   itemDescription: 
   itemType: 3
   hungerAmount: 0

@@ -17,12 +17,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void AddItem(ItemSO item, int amount)
     {
+        if (item == null)
+        {
+            Debug.LogError("Próba dodania null item!");
+            return;
+        }
+
+        if (item.itemIcon == null)
+        {
+            Debug.LogError($"Item {item.itemName} nie ma przypisanej ikony!");
+            return;
+        }
+
         itemSO = item;
         quantity += amount;
 
-        quantityText.text = quantity.ToString();
-        icon.sprite = itemSO.itemIcon;
-        
+        icon.sprite = item.itemIcon;
+        icon.enabled = true;
         UpdateQuantityText();
     }
     
@@ -43,9 +54,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     public void ClearSlot()
     {
-        icon.sprite = nullImage;
         itemSO = null;
         quantity = 0;
+        icon.sprite = nullImage;
+        icon.enabled = false;
         UpdateQuantityText();
     }
     
@@ -101,72 +113,76 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     }
 
     public void OnEndDrag(PointerEventData eventData)
-    {
-        quantityText.enabled = true;
-        if (itemSO == null) return;
-        icon.sprite = itemSO.itemIcon;
-        TooltipManager.instance.ShowTooltip(itemSO.itemName, itemSO.itemIcon, itemSO.itemDescription);
+{
+    if (itemSO == null) return;
 
-        if (dragIcon != null)
+    quantityText.enabled = true;
+    icon.sprite = itemSO.itemIcon;
+
+    if (dragIcon != null)
+    {
+        Destroy(dragIcon);
+    }
+
+    if (eventData.pointerEnter != null)
+    {
+        Transform current = eventData.pointerEnter.transform;
+        while (current != null)
         {
-            Destroy(dragIcon);
-        }
-        
-        if (eventData.pointerEnter != null)
-        {
-            Transform current = eventData.pointerEnter.transform;
-            while (current != null)
+            if (current.TryGetComponent<Slot>(out Slot itemSlot))
             {
-                if (current.TryGetComponent<Slot>(out Slot itemSlot))
+                if (itemSlot == this) return; // Nie przenoś do samego siebie
+
+                // Przenoszenie do pustego slotu
+                if (itemSlot.itemSO == null)
                 {
-                    if (itemSlot == this)
+                    if (eventData.button == PointerEventData.InputButton.Left)
                     {
-                        return;
-                    }   
-                    
-                    if (itemSlot.itemSO == null)
+                        itemSlot.ForceSetItem(itemSO, quantity); // Użyj ForceSetItem zamiast AddItem
+                        ClearSlot();
+                    }
+                    else if (eventData.button == PointerEventData.InputButton.Right)
                     {
-                        if (eventData.button == PointerEventData.InputButton.Left)
+                        if (quantity <= 1)
                         {
-                            itemSlot.AddItem(itemSO, quantity);
+                            itemSlot.ForceSetItem(itemSO, quantity);
                             ClearSlot();
                         }
-                        if (eventData.button == PointerEventData.InputButton.Right)
+                        else
                         {
-                            if (quantity <= 1)
-                            {
-                                itemSlot.AddItem(itemSO, quantity);
-                                ClearSlot();
-                            }
-                            else
-                            {
-                                itemSlot.AddItem(itemSO, quantity / 2);
-                                quantity -= quantity / 2;
-                            }
+                            int halfAmount = quantity / 2;
+                            itemSlot.ForceSetItem(itemSO, halfAmount);
+                            quantity -= halfAmount;
                             UpdateQuantityText();
-                            return;
                         }
-
                     }
-                    if(itemSlot.itemSO != null && itemSlot.itemSO == itemSO)
-                    {
-                        itemSlot.AddItem(itemSO, quantity);
-                        ClearSlot();
-                        UpdateQuantityText();
-                        return;
-                    }
-                    if (itemSlot.itemSO != null && itemSlot.itemSO != itemSO)
-                    {
-                        SwapItems(itemSlot);
-                        UpdateQuantityText();
-                        return;
-                    }
-                    
+                    return;
                 }
-                current = current.parent;
+
+                // Łączenie przedmiotów tego samego typu
+                if (itemSlot.itemSO == itemSO)
+                {
+                    itemSlot.quantity += quantity;
+                    itemSlot.UpdateQuantityText();
+                    ClearSlot();
+                    return;
+                }
+
+                // Zamiana przedmiotów różnych typów
+                if (itemSlot.itemSO != itemSO)
+                {
+                    SwapItems(itemSlot);
+                    return;
+                }
             }
+            current = current.parent;
         }
     }
+
+    // Jeśli przedmiot nie został upuszczony na slot, przywróć go do oryginalnego miejsca
+    icon.sprite = itemSO.itemIcon;
+    UpdateQuantityText();
+}
     private void SwapItems(Slot otherSlot)
     {
         if (itemSO == null || otherSlot.itemSO == null) return; 
@@ -180,6 +196,26 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         otherSlot.ClearSlot();  
         otherSlot.AddItem(tempItem, tempQuantity); 
 
+        UpdateQuantityText();
+    }
+    
+    //for chests
+    public void ForceSetItem(ItemSO item, int amount)
+    {
+        itemSO = item;
+        quantity = amount;
+    
+        if (item != null)
+        {
+            icon.sprite = item.itemIcon;
+            icon.enabled = true;
+        }
+        else
+        {
+            icon.sprite = nullImage;
+            icon.enabled = false;
+        }
+    
         UpdateQuantityText();
     }
 }
