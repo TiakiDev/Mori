@@ -1,6 +1,6 @@
 
 ![Logo](https://i.imgur.com/MgjCmK3.png)
-# 🌲 Mori - Survival Game  
+# ✨ Oasis - Survival Game  
 
 
 ![Unity Version](https://img.shields.io/badge/Unity-2022.3.50f1-blue.svg)
@@ -12,7 +12,6 @@
 Prosta gra survivalowa, w której głównym celem jest **przetrwanie**.  
 Projekt w fazie rozwoju, z planami rozbudowy kluczowych mechanik.
 
-`🔥 Aktualny status: Wczesny prototyp | ⌚ Ostatnia aktualizacja: 03.02.2025`
 
 ## 🚀 Szybki Start
 ### Wymagania
