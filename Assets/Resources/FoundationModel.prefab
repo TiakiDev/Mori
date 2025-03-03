@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 1104913343989013767}
   - component: {fileID: 2219318649235558088}
   - component: {fileID: 5957405637783094989}
+  - component: {fileID: -1751121188414151776}
   m_Layer: 9
   m_Name: FoundationModel
   m_TagString: Foundation
@@ -486,6 +487,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0093412, y: 0.36284897, z: 2.0065274}
   m_Center: {x: -0.0037429333, y: -0.18221079, z: 0.0032637715}
+--- !u!95 &-1751121188414151776
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3380438474215507567}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f4233278dd8450b4889a362376664640, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4215839889700244707
 GameObject:
   m_ObjectHideFlags: 0

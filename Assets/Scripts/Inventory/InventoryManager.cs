@@ -25,6 +25,8 @@ public class InventoryManager : MonoBehaviour
     //chest
     public List<Slot> chestSlots = new List<Slot>();
     public Chest currentChest;
+    
+    private RectTransform panelRectTransform;
 
     public void AddItem(ItemSO item, int amount = 1)
     {
@@ -72,6 +74,10 @@ public class InventoryManager : MonoBehaviour
     {
         inventoryPanel.SetActive(false);
         chestPanel.SetActive(false); // DODAJ TO
+
+        panelRectTransform = inventoryPanel.GetComponent<RectTransform>();
+
+        panelRectTransform.anchoredPosition = new Vector2(0, 0);
     }
     
     public void OpenChest(Chest chest)
@@ -79,7 +85,7 @@ public class InventoryManager : MonoBehaviour
         if (currentChest != null) return;
     
         currentChest = chest;
-        //inventoryPanel.SetActive(true); //TODO: odkomentuj
+        inventoryPanel.SetActive(true);
         chestPanel.SetActive(true);
         isOpen = true;
         crosshairs.SetActive(false);
@@ -89,6 +95,8 @@ public class InventoryManager : MonoBehaviour
         {
             currentChest.slots.Add(new ChestSlot());
         }
+        
+        panelRectTransform.anchoredPosition = new Vector2(-331.75f, 0);
     
         RefreshChestUI();
         
@@ -152,6 +160,8 @@ public class InventoryManager : MonoBehaviour
         FirstPersonController.instance.crosshairObject.gameObject.SetActive(true);
         SelectionManager.instance.interactionText.gameObject.SetActive(true);
         TooltipManager.instance.HideTooltip();
+        
+        panelRectTransform.anchoredPosition = new Vector2(0, 0);
         
         //chest stuff
         chestPanel.SetActive(false);

@@ -13,6 +13,11 @@ public class MineableOre : MonoBehaviour
     public float oreHealth;
     
     public string oreName;
+
+    public bool isStone;
+
+    public GameObject minedOrePrefab;
+    
     
 
     private void Start()
@@ -55,13 +60,21 @@ public class MineableOre : MonoBehaviour
         Vector3 orePosition = transform.position;
 
         hasBeenMined = true;
-        Destroy(transform.GetChild(0).gameObject);
+        if (isStone)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
         canBeMined = false;
         SelectionManager.instance.selectedOre = null;
         SelectionManager.instance.infoHolder.gameObject.SetActive(false);
         SelectionManager.instance.pickaxeCursor.SetActive(false);
         
-        GameObject brokenOre = Instantiate(Resources.Load<GameObject>("Prefabs/MinedOre"), orePosition, Quaternion.identity);
+        //GameObject brokenOre = Instantiate(Resources.Load<GameObject>("Prefabs/MinedOre"), orePosition, Quaternion.identity);
+        GameObject brokenOre = Instantiate(minedOrePrefab, orePosition, Quaternion.identity);
     }
 
     private IEnumerator Hit()

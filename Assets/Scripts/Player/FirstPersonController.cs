@@ -405,7 +405,7 @@ public class FirstPersonController : MonoBehaviour
                 walkSpeed = 5f;
                 enableSprint = true;
                 enableCrouch = true;
-                rb.mass = 1f;
+                rb.mass = 1.8f;
                 jumpPower = 6f;
             }
             

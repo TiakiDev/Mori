@@ -75,15 +75,9 @@ private void Update()
             SnapToSurface();
         }
 
-        // Sprawdzenie poprawności umiejscowienia budowli
-        if (itemToBeConstructed.name == "FoundationModel" || itemToBeConstructed.GetComponent<Constructable>().isProp)
-        {
-            isValidPlacement = CheckValidConstructionPosition();
-        }
-        else
-        {
-            isValidPlacement = false;
-        }
+
+        isValidPlacement = CheckValidConstructionPosition();
+
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -177,7 +171,9 @@ private void Update()
     
         Constructable constructable = itemToBeConstructed.GetComponent<Constructable>();
         if(constructable == null) return;
-
+        
+        constructable.GetComponent<Animator>().SetTrigger("Place");
+        
         constructable.enabled = false;
         constructable.SetDefaultColor();
         constructable.solidCollider.enabled = true;
@@ -221,6 +217,8 @@ private void Update()
         Constructable constructable = itemToBeConstructed.GetComponent<Constructable>();
         if(constructable == null) return;
 
+        constructable.GetComponent<Animator>().SetTrigger("Place");
+        
         itemToBeConstructed.transform.SetParent(transform.parent, true);
     
         constructable.ExtractGhostMembers();
@@ -241,6 +239,7 @@ private void Update()
 
         itemToBeConstructed = null;
         inConstructionMode = false;
+        
         
         ProcessBuildingCost();
     }
@@ -271,7 +270,10 @@ private void Update()
                 LayerMask.GetMask("Structure")
             );
 
-            bool isValid = constructable.isValidToBeBuilt && !isOverlappingStructures;
+            bool isValid = constructable.isValidToBeBuilt && !isOverlappingStructures && !constructable.needFoundation;
+
+            // Debugging logs
+            Debug.Log($"Constructable: {itemToBeConstructed.name} | isValidToBeBuilt: {constructable.isValidToBeBuilt} | isOverlappingStructures: {isOverlappingStructures} | isValid: {isValid}");
 
             // Ustawienie koloru w zależności od wyniku
             if (isValid)
@@ -286,8 +288,6 @@ private void Update()
             {
                 constructable.SetInvalidColor(); // Czerwony kolor
             }
-
-            Debug.Log($"Sprawdzam pozycję dla {itemToBeConstructed.name} | isValid: {constructable.isValidToBeBuilt} | Overlap: {isOverlappingStructures} | Final Valid: {isValid}");
 
             return isValid;
         }

@@ -220,6 +220,8 @@ MonoBehaviour:
   oreMaxHealth: 5
   oreHealth: 0
   oreName: Iron Ore
+  isStone: 0
+  minedOrePrefab: {fileID: 4340275442105223803, guid: ae6bbff4b5558204a942b89c479979f5, type: 3}
 --- !u!65 &8898879725694675891
 BoxCollider:
   m_ObjectHideFlags: 0

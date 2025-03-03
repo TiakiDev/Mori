@@ -63,7 +63,7 @@ private void Update()
         Chest chest = selectionTransform.GetComponent<Chest>();
 
         // Obsługa drzew
-        if (choppableTree && choppableTree.playerInRange)
+        if (choppableTree && choppableTree.playerInRange && !InventoryManager.instance.isOpen)
         {
             choppableTree.canBeChopped = true;
             selectedTree = choppableTree.gameObject;
@@ -105,7 +105,7 @@ private void Update()
         }
 
         // Obsługa przedmiotów
-        if (item && interactable.playerInRange && onTarget)
+        if (item && interactable.playerInRange && onTarget && !InventoryManager.instance.isOpen)
         {
             handCursor.SetActive(true);
             anyCursorActive = true; // Aktywny kursor ręki

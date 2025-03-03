@@ -9,6 +9,8 @@ public class Constructable : MonoBehaviour
     public bool canSnapToStructures = false;
 
     public bool isProp;
+
+    public bool needFoundation;
     
     [Space]
     

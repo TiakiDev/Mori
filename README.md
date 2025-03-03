@@ -1,5 +1,5 @@
 
-![Logo](https://i.imgur.com/HEQbfu5.png)
+![Logo](https://i.imgur.com/MgjCmK3.png)
 # 🌲 Mori - Survival Game  
 
 

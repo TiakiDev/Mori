@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -2718834629746211794}
   - component: {fileID: -8397130206120942474}
   - component: {fileID: -7759405371950348444}
+  - component: {fileID: -3030162135557618741}
   m_Layer: 9
   m_Name: ChestModel
   m_TagString: Untagged
@@ -200,3 +201,24 @@ MonoBehaviour:
   objectName: Chest
   playerInRange: 0
   slots: []
+--- !u!95 &-3030162135557618741
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443646633937670674}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d0a6d87146d35994d811eae11b8f1868, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
